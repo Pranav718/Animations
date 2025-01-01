@@ -5,6 +5,8 @@
 //  Created by Michael Lee on 10/26/24.
 //
 
+// found the idea for this animation by @mikelikesdesign, found it amazing and changed some values and will be changing some logic too.
+
 import SwiftUI
 
 struct DotView: View {
