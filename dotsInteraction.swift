@@ -1,9 +1,8 @@
 //
 //  ContentView.swift
-//  dots interaction
+//  SomeAnimations
 //
-//  Created by Michael Lee on 10/26/24.
-//
+//  Created by Pranav Ray on 01/01/25.
 
 // found the idea for this animation by @mikelikesdesign, found it amazing and changed some values and will be changing some logic too.
 
