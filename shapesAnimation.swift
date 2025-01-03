@@ -8,6 +8,7 @@ import SwiftUI
 
 struct RippleEffectView: View {
     @State private var ripples: [Ripple] = []
+    @GestureState private var dragLocation: CGPoint = .zero
     
     var body: some View {
         ZStack {
@@ -29,9 +30,15 @@ struct RippleEffectView: View {
             }
         }
         .contentShape(Rectangle()) 
-        .onTapGesture { location in
-            addRipple(at: location)
-        }
+        .gesture(
+            DragGesture()
+                .updating($dragLocation) { value, state, _ in
+                    state = value.location
+                }
+                .onChanged { value in
+                    addRipple(at: value.location)
+                }
+        )
     }
     
     func addRipple(at location: CGPoint) {
@@ -54,71 +61,12 @@ struct RippleEffectView: View {
         
         
         withAnimation(.easeOut(duration: newRipple.duration)) {
-            ripples[ripples.count - 1].scale = 0
-            ripples[ripples.count - 1].opacity = 0 
+            ripples[ripples.count - 1].scale = 0 
         }
     }
     
-    private func removeRipple(_ ripple: Ripple) {
+    func removeRipple(_ ripple: Ripple) {
         ripples.removeAll { $0.id == ripple.id }
-    }
-}
-
-struct Ripple: Identifiable {
-    let id: UUID
-    var color: Color
-    var size: CGFloat
-    var scale: CGFloat
-    var opacity: Double
-    var duration: Double
-    var position: CGPoint 
-    var shape: ShapeType 
-}
-
-enum ShapeType: Shape {
-    case circle
-    case rectangle
-    case triangle
-    
-    func path(in rect: CGRect) -> Path {
-        switch self {
-        case .circle:
-            return Path { path in
-                path.addEllipse(in: rect)
-            }
-        case .rectangle:
-            return Path { path in
-                path.addRect(rect)
-            }
-        case .triangle:
-            return Path { path in
-                path.move(to: CGPoint(x: rect.midX, y: rect.minY))
-                path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-                path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-                path.closeSubpath()
-            }
-        }
-    }
-    
-    static func random() -> ShapeType {
-        let shapes: [ShapeType] = [.circle, .rectangle, .triangle]
-        return shapes.randomElement() ?? .circle
-    }
-}
-
-extension Color {
-    static func random() -> Color {
-        return Color(
-            red: Double.random(in: 0...1),
-            green: Double.random(in: 0...1),
-            blue: Double.random(in: 0...1)
-        )
-    }
-}
-
-struct ContentView: View {
-    var body: some View {
-        RippleEffectView()
     }
 }
 
