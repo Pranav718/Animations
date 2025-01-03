@@ -14,12 +14,12 @@ struct RippleEffectView: View {
             Color.black.edgesIgnoringSafeArea(.all)
             
             ForEach(ripples) { ripple in
-                Circle()
+                ripple.shape
                     .fill(ripple.color)
                     .frame(width: ripple.size, height: ripple.size)
                     .scaleEffect(ripple.scale)
                     .opacity(ripple.opacity)
-                    .position(ripple.position) // Set the position of the ripple
+                    .position(ripple.position) 
                     .animation(.easeOut(duration: ripple.duration), value: ripple.scale)
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + ripple.duration) {
@@ -28,30 +28,34 @@ struct RippleEffectView: View {
                     }
             }
         }
-        .contentShape(Rectangle()) // Make the entire area tappable
+        .contentShape(Rectangle()) 
         .onTapGesture { location in
             addRipple(at: location)
         }
     }
     
-    private func addRipple(at location: CGPoint) {
+    func addRipple(at location: CGPoint) {
+        let randomSize = CGFloat.random(in: 50...200) 
+        let randomColor = Color.random() 
+        let randomShape = ShapeType.random() 
+        
         let newRipple = Ripple(
             id: UUID(),
-            color: Color.blue,
-            size: 0,
+            color: randomColor,
+            size: randomSize,
             scale: 1,
             opacity: 1,
             duration: 1.0,
-            position: location // Set the position to the touch location
+            position: location,
+            shape: randomShape 
         )
         
         ripples.append(newRipple)
         
-        // Animate the ripple
+        
         withAnimation(.easeOut(duration: newRipple.duration)) {
-            ripples[ripples.count - 1].size = 200 // Final size of the ripple
-            ripples[ripples.count - 1].scale = 0 // Scale to 0 for the animation
-            ripples[ripples.count - 1].opacity = 0 // Fade out
+            ripples[ripples.count - 1].scale = 0
+            ripples[ripples.count - 1].opacity = 0 
         }
     }
     
@@ -67,7 +71,49 @@ struct Ripple: Identifiable {
     var scale: CGFloat
     var opacity: Double
     var duration: Double
-    var position: CGPoint // Add position property
+    var position: CGPoint 
+    var shape: ShapeType 
+}
+
+enum ShapeType: Shape {
+    case circle
+    case rectangle
+    case triangle
+    
+    func path(in rect: CGRect) -> Path {
+        switch self {
+        case .circle:
+            return Path { path in
+                path.addEllipse(in: rect)
+            }
+        case .rectangle:
+            return Path { path in
+                path.addRect(rect)
+            }
+        case .triangle:
+            return Path { path in
+                path.move(to: CGPoint(x: rect.midX, y: rect.minY))
+                path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+                path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+                path.closeSubpath()
+            }
+        }
+    }
+    
+    static func random() -> ShapeType {
+        let shapes: [ShapeType] = [.circle, .rectangle, .triangle]
+        return shapes.randomElement() ?? .circle
+    }
+}
+
+extension Color {
+    static func random() -> Color {
+        return Color(
+            red: Double.random(in: 0...1),
+            green: Double.random(in: 0...1),
+            blue: Double.random(in: 0...1)
+        )
+    }
 }
 
 struct ContentView: View {
