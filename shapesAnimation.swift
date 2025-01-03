@@ -61,7 +61,8 @@ struct RippleEffectView: View {
         
         
         withAnimation(.easeOut(duration: newRipple.duration)) {
-            ripples[ripples.count - 1].scale = 0 
+            ripples[ripples.count - 1].scale = 0
+            ripples[ripples.count - 1].opacity = 0 
         }
     }
     
