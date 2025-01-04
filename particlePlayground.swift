@@ -111,6 +111,7 @@ struct ContentView: View {
     var body: some View {
         ParticleSystem()
             .ignoreSafeArea()
+            .background(RadialGradient(colors: [.black,.white], center: .center, startRadius: 0, endRadius: 1111))
     }
 }
 
