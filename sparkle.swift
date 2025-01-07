@@ -14,7 +14,7 @@ struct SparkleView: View {
     var body: some View {
         ZStack {
             Circle()
-                .fill(Color.yellow)
+                .fill(Color.red)
                 .frame(width: 20, height: 20)
                 .scaleEffect(isAnimating ? 0.5 : 1.0)
                 .opacity(isAnimating ? 0.0 : 1.0)
@@ -43,8 +43,8 @@ struct RayView: View {
     
     var body: some View {
         Rectangle()
-            .fill(Color.yellow)
-            .frame(width: 10, height: 3)
+            .fill(Color.red)
+            .frame(width: 100, height: 3)
     }
 }
 
