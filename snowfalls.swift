@@ -36,10 +36,10 @@ struct SnowfallView: View {
         }
     }
     
-    private func startSnowfall() {
+    func startSnowfall() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
-            let size = CGFloat.random(in: 5...15) // Random size for the snowflake
-            let xPosition = CGFloat.random(in: 0...UIScreen.main.bounds.width) // Random x position
+            let size = CGFloat.random(in: 5...15) 
+            let xPosition = CGFloat.random(in: 0...UIScreen.main.bounds.width) 
             let snowflake = Snowflake(position: CGPoint(x: xPosition, y: -size), size: size)
             snowflakes.append(snowflake)
         }
