@@ -37,8 +37,8 @@ struct BubbleView: View {
         ForEach(0..<12) { index in
             let angle = Double(index) * (360.0 / 12.0)
             let radius: CGFloat = 150
-            let x = cos(angle * .pi / 180) * radius + 125
-            let y = sin(angle * .pi / 180) * radius + 125
+            let x = cos(angle * .pi / 180) * radius + 150
+            let y = sin(angle * .pi / 180) * radius + 150
             
             BubbleView(
                 position: CGPoint(x: x, y: y),
