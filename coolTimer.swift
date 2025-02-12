@@ -158,9 +158,9 @@ class TimerManager: ObservableObject {
         timeRemaining = 300
     }
     
-    func setCustomTime(hours: Int, minutes: Int) {
+    func setCustomTime(hours: Int, minutes: Int, seconds: Int) {
         pause()
-        timeRemaining = TimeInterval(hours * 3600 + minutes * 60)
+        timeRemaining = TimeInterval(hours * 3600 + minutes * 60 + seconds)
     }
     
     private func playCompletionSound() {
