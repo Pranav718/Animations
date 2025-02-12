@@ -57,6 +57,19 @@ struct SnowfallView: View {
             opacity: Double.random(in: 0.3...0.7)
         )
     }
+    
+    private func updateSnowflakes(in size: CGSize) {
+        for i in snowflakes.indices {
+            snowflakes[i].y += snowflakes[i].speed * 0.016
+            snowflakes[i].x += sin(snowflakes[i].y * 0.05) * 0.5
+            
+            if snowflakes[i].y > size.height + 50 {
+                snowflakes[i] = createSnowflake(in: size)
+                snowflakes[i].y = -50
+            }
+        }
+    }
+    
 }
 
 struct AdvancedTimerView: View {
