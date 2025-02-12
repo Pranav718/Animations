@@ -79,6 +79,9 @@ struct AdvancedTimerView: View {
         ZStack {
             Color.black
                 .edgesIgnoringSafeArea(.all)
+
+            SnowfallView()
+                .allowsHitTesting(false)
             
             VStack(spacing: 20) {
                 TimeDisplayView(timeRemaining: timerManager.timeRemaining)
