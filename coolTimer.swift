@@ -8,6 +8,15 @@
 import SwiftUI
 import Combine
 
+struct Snowflake: Identifiable {
+    let id = UUID()
+    var x: CGFloat
+    var y: CGFloat
+    var size: CGFloat
+    var speed: CGFloat
+    var opacity: Double
+}
+
 struct AdvancedTimerView: View {
     @StateObject private var timerManager = TimerManager()
     
