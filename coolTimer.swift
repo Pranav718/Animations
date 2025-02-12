@@ -17,6 +17,48 @@ struct Snowflake: Identifiable {
     var opacity: Double
 }
 
+struct SnowfallView: View {
+    @State private var snowflakes: [Snowflake] = []
+    let timer = Timer.publish(every: 0.016, on: .main, in: .common).autoconnect()
+    
+    var body: some View {
+        GeometryReader { geometry in
+            Canvas { context, size in
+                for flake in snowflakes {
+                    context.opacity = flake.opacity
+                    context.fill(
+                        Circle().path(in: CGRect(
+                            x: flake.x,
+                            y: flake.y,
+                            width: flake.size,
+                            height: flake.size
+                        )),
+                        with: .color(.white)
+                    )
+                }
+            }
+            .onAppear {
+                for _ in 0..<50 {
+                    snowflakes.append(createSnowflake(in: geometry.size))
+                }
+            }
+            .onReceive(timer) { _ in
+                updateSnowflakes(in: geometry.size)
+            }
+        }
+    }
+    
+    private func createSnowflake(in size: CGSize) -> Snowflake {
+        Snowflake(
+            x: CGFloat.random(in: 0...size.width),
+            y: CGFloat.random(in: -50...size.height),
+            size: CGFloat.random(in: 2...4),
+            speed: CGFloat.random(in: 50...150),
+            opacity: Double.random(in: 0.3...0.7)
+        )
+    }
+}
+
 struct AdvancedTimerView: View {
     @StateObject private var timerManager = TimerManager()
     
