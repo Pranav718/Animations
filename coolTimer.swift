@@ -222,6 +222,7 @@ struct TimerConfigView: View {
     @ObservedObject var timerManager: TimerManager
     @State private var hours: Int = 0
     @State private var minutes: Int = 5
+    @State private var seconds: Int = 0  
     
     var body: some View {
         VStack(spacing: 15) {
@@ -252,10 +253,21 @@ struct TimerConfigView: View {
                 .pickerStyle(WheelPickerStyle())
                 .frame(width: 100, height: 100)
                 .clipped()
+                
+                Picker("Seconds", selection: $seconds) {
+                    ForEach(0..<60, id: \.self) { second in
+                        Text("\(second) sec")
+                            .foregroundColor(.white)
+                            .shadow(color: .white.opacity(0.5), radius: 10, x: 0, y: 0)
+                    }
+                }
+                .pickerStyle(WheelPickerStyle())
+                .frame(width: 100, height: 100)
+                .clipped()
             }
             
             Button(action: {
-                timerManager.setCustomTime(hours: hours, minutes: minutes)
+                timerManager.setCustomTime(hours: hours, minutes: minutes, seconds: seconds)  
             }) {
                 Text("Set Timer")
                     .font(.headline)
